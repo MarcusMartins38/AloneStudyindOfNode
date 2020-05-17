@@ -1,3 +1,4 @@
+const { hash } = require('bcryptjs');
 const { uuid } = require('uuidv4');
 const User = require('../models/User');
 
@@ -19,14 +20,18 @@ module.exports = {
       return res.status(500).send('Já existe um usuario com esse E-mail');
     }
 
+    const hashedPassword = await hash(password, 8);
+
     const user = await User.create({
       id: uuid(),
       name,
       email,
-      password,
+      password: hashedPassword,
       phone,
       uf,
     });
+
+    delete user.password;
 
     return res.json(user);
   },

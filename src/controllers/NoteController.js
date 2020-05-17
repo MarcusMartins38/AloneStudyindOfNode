@@ -5,13 +5,15 @@ const Note = require('../models/Note');
 
 module.exports = {
   async index(req, res) {
-    const { user_id } = req.params;
+    //id it's the user_id
+    const { id } = await req.user;
 
-    const user = await User.findByPk(user_id, {
+    const user = await User.findByPk(id, {
       include: { association: 'notes' },
     });
 
     if (!user) {
+      console.log(req.user);
       return res.status(400).json('User not exist');
     }
 
@@ -19,10 +21,11 @@ module.exports = {
   },
 
   async store(req, res) {
-    const { user_id } = req.params;
+    //id it's the user_id
+    const { id } = req.params;
     const { case_title, description, help } = req.body;
 
-    const user = await User.findByPk(user_id);
+    const user = await User.findByPk(id);
 
     if (!user) {
       return res.status(400).json({ error: 'User not found' });
@@ -33,7 +36,7 @@ module.exports = {
       case_title,
       description,
       help,
-      user_id,
+      id,
     });
 
     return res.json(note);
