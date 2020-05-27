@@ -22,7 +22,7 @@ module.exports = {
 
   async store(req, res) {
     //id it's the user_id
-    const { id } = req.params;
+    const { id } = await req.user;
     const { case_title, description, help } = req.body;
 
     const user = await User.findByPk(id);
@@ -31,12 +31,14 @@ module.exports = {
       return res.status(400).json({ error: 'User not found' });
     }
 
+    const user_id = id;
+
     const note = await Note.create({
       id: uuid(),
       case_title,
       description,
       help,
-      id,
+      user_id,
     });
 
     return res.json(note);

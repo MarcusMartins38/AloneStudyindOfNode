@@ -31,8 +31,6 @@ module.exports = {
       uf,
     });
 
-    delete user.password;
-
     return res.json(user);
   },
 };

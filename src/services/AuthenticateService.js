@@ -1,4 +1,4 @@
-const { compare } = require('bcryptjs');
+const { compare, hash } = require('bcryptjs');
 const User = require('../models/User');
 const { sign } = require('jsonwebtoken');
 const authConfig = require('../config/auth');
@@ -13,7 +13,7 @@ module.exports = {
       throw new Error('Incorrect Email or Password');
     }
 
-    const comparedPassword = compare(user.password, password);
+    const comparedPassword = await compare(password, user.password);
 
     if (!comparedPassword) {
       throw new Error('Incorrect Email or Password');
