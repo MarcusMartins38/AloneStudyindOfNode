@@ -13,5 +13,6 @@ routes.post('/sessions', AuthenticateController.create);
 
 routes.get('/notes', ensureAuth.execute, NoteController.index);
 routes.post('/notes', ensureAuth.execute, NoteController.store);
+routes.delete('/notes/:id', ensureAuth.execute, NoteController.remove);
 
 module.exports = routes;

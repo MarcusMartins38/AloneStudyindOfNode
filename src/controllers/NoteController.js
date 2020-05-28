@@ -13,11 +13,10 @@ module.exports = {
     });
 
     if (!user) {
-      console.log(req.user);
       return res.status(400).json('User not exist');
     }
 
-    return res.json(user);
+    return res.json(user.notes);
   },
 
   async store(req, res) {
@@ -42,5 +41,19 @@ module.exports = {
     });
 
     return res.json(note);
+  },
+
+  async remove(req, res) {
+    const { id } = req.params;
+
+    const noteFind = await Note.findByPk(id);
+
+    if (!noteFind) {
+      throw new Error('This note not exists');
+    }
+
+    await Note.destroy({ where: { id } });
+
+    return res.send();
   },
 };
